@@ -8,6 +8,7 @@
 
 #import "TweetCell.h"
 #import "APIManager.h"
+#import "UIImageView+AFNetworking.h"
 
 @implementation TweetCell
 
@@ -46,6 +47,7 @@
             NSLog(@"it retweeted");
         }];
     }else{
+        self.tweet.retweetCount -= 1;
         [[APIManager shared]unretweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
             NSLog(@"it unretweeted");
         }];
@@ -66,12 +68,44 @@
             }
         }];
     }else{
+        self.tweet.favoriteCount -= 1;
         [[APIManager shared]unfavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
             NSLog(@"it unfavorited");
         }];
     }
     
     [self refreshData];
+}
+
+- (void)setTweetCell:(Tweet *)tweet{
+    
+    _tweet = tweet;
+    //setting all info
+    self.createdAt.text = self.tweet.createdAtString;
+    self.favoriteCount.text = [NSString stringWithFormat:@"%d", self.tweet.favoriteCount];
+    self.name.text = self.tweet.user.name;
+    self.screenName.text = [NSString stringWithFormat:@"@%@", self.tweet.user.screenName];
+    self.retweetCount.text = [NSString stringWithFormat:@"%d", self.tweet.retweetCount];
+    self.text.text = self.tweet.text;
+    self.replies.text = @"124";
+    self.timeAgo.text = self.tweet.timeAgo;
+    
+    //sets the buttons to correct image
+    [self refreshData];
+    
+    //gets the profile picture of the tweet
+    NSString *profileImageURL = [self.tweet.user.profileImageUrlHttps stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
+    NSURL *profileImage = [NSURL URLWithString:profileImageURL];
+    
+    NSURLRequest *profileImageRequest = [NSURLRequest requestWithURL:profileImage];
+    
+    [self.posterImage setImageWithURLRequest:profileImageRequest placeholderImage:nil success:^(NSURLRequest * _Nullable request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+        
+        self.posterImage.image = image;
+        
+    } failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
+        //failure
+    }];
 }
 
 @end
