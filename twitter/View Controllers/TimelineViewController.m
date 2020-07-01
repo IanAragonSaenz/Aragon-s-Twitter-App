@@ -12,6 +12,8 @@
 #import "TweetCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "ComposeViewController.h"
+#import "AppDelegate.h"
+#import "LoginViewController.h"
 
 @interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -76,39 +78,9 @@
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
+    Tweet *tweet = self.tweets[indexPath.row];
     
-    cell.tweet = self.tweets[indexPath.row];
-    
-    cell.createdAt.text = cell.tweet.createdAtString;
-    cell.favoriteCount.text = [NSString stringWithFormat:@"%d", cell.tweet.favoriteCount];
-    cell.name.text = cell.tweet.user.name;
-    cell.screenName.text = cell.tweet.user.screenName;
-    cell.retweetCount.text = [NSString stringWithFormat:@"%d", cell.tweet.retweetCount];
-    cell.text.text = cell.tweet.text;
-    cell.replies.text = @"124";
-    
-    //sets the buttons to correct image
-    cell.retweetCount.text = [NSString stringWithFormat:@"%d", cell.tweet.retweetCount];
-    UIImage *buttonImage = [UIImage imageNamed:(cell.tweet.retweeted)? @"retweet-icon-green":@"retweet-icon"];
-    [cell.retweetButton setImage:buttonImage forState:UIControlStateNormal];
-    
-    cell.favoriteCount.text = [NSString stringWithFormat:@"%d", cell.tweet.favoriteCount];
-    buttonImage = [UIImage imageNamed:(cell.tweet.favorited)? @"favor-icon-red":@"favor-icon"];
-    [cell.favoriteButton setImage:buttonImage forState:UIControlStateNormal];
-    
-    //gets the profile picture of the tweet
-    NSString *profileImageURL = [cell.tweet.user.profileImageUrlHttps stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
-    NSURL *profileImage = [NSURL URLWithString:profileImageURL];
-    
-    NSURLRequest *profileImageRequest = [NSURLRequest requestWithURL:profileImage];
-    
-    [cell.posterImage setImageWithURLRequest:profileImageRequest placeholderImage:nil success:^(NSURLRequest * _Nullable request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
-        
-        cell.posterImage.image = image;
-        
-    } failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
-        //failure
-    }];
+    [cell setTweetCell:tweet];
     
     return cell;
 }
@@ -122,6 +94,17 @@
     [self fetchTweets];
     [self.tableView reloadData];
 }
+
+- (IBAction)logout:(id)sender {
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    appDelegate.window.rootViewController = loginViewController;
+    
+    [[APIManager shared]logout];
+}
+
 
 
 @end
