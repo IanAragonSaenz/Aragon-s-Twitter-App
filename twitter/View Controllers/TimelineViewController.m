@@ -10,12 +10,12 @@
 #import "APIManager.h"
 #import "Tweet.h"
 #import "TweetCell.h"
-#import "UIImageView+AFNetworking.h"
 #import "ComposeViewController.h"
 #import "AppDelegate.h"
 #import "LoginViewController.h"
+#import "TweetUserViewController.h"
 
-@interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface TimelineViewController () <TweetCellDelegate, ComposeViewControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *tweets;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
@@ -34,7 +34,6 @@
     [self.refreshControl addTarget:self action:@selector(fetchTweets) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self fetchTweets];
-    
 }
 
 - (void)fetchTweets{
@@ -62,10 +61,14 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UINavigationController *navigationController = [segue destinationViewController];
-    ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
-    composeController.delegate = self;
-    
+    if([segue.identifier isEqualToString:@"userView"]){
+        TweetUserViewController *tweetUserViewController = [segue destinationViewController];
+        tweetUserViewController.user = sender;
+    }else if([segue.identifier isEqualToString:@"doTweet"]){
+        UINavigationController *navigationController = [segue destinationViewController];
+        ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+        composeController.delegate = self;
+    }
 }
 
 
@@ -74,6 +77,7 @@
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetCell"];
     Tweet *tweet = self.tweets[indexPath.row];
     [cell setTweetCell:tweet];
+    cell.delegate = self;
     return cell;
 }
 
@@ -81,6 +85,7 @@
     return self.tweets.count;
 }
 
+#pragma mark - Navigation Buttons
 
 - (void)didTweet:(nonnull Tweet *)tweet {
     [self fetchTweets];
@@ -95,6 +100,11 @@
     [[APIManager shared]logout];
 }
 
+
+#pragma mark - Tweet Cell
+- (void)tweetCell:(nonnull TweetCell *)tweetCell didTap:(nonnull User *)user {
+    [self performSegueWithIdentifier:@"userView" sender:user];
+}
 
 
 @end
