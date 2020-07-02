@@ -146,4 +146,26 @@ static NSString * const consumerSecret = @"9bcTYqbARB9e4s3fS77xe65k8XoDllKANnQ9Q
     
 }
 
+- (void)getUser:(NSString *)idStr completion:(void (^)(User *, NSError *))completion{
+    
+    NSDictionary *parameters = @{@"user_id": idStr};
+    
+    [self GET:@"https://api.twitter.com/1.1/users/lookup.json" parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary  *_Nullable dictionary) {
+        User *user = [[User alloc] initWithDictionary:dictionary];
+        completion(user, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, error);
+    }];
+}
+
+- (void)getMe:(void (^)(User *, NSError *))completion{
+    
+    [self GET:@"https://api.twitter.com/1.1/account/verify_credentials.json" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary  *_Nullable dictionary) {
+        User *user = [[User alloc] initWithDictionary:dictionary];
+        completion(user, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, error);
+    }];
+}
+
 @end
