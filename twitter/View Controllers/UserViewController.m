@@ -9,6 +9,7 @@
 #import "UserViewController.h"
 #import "APIManager.h"
 #import "User.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface UserViewController ()
 
@@ -18,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *following;
 @property (weak, nonatomic) IBOutlet UILabel *followers;
 @property (weak, nonatomic) IBOutlet UILabel *desc;
+@property (weak, nonatomic) IBOutlet UIImageView *userImage;
 
 @end
 
@@ -26,7 +28,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     [[APIManager shared]getMe:^(User *user, NSError *error) {
         if(error == nil){
             self.user = user;
@@ -35,6 +36,14 @@
             self.followers.text = [NSString stringWithFormat:@"%d", user.followersCount];
             self.following.text = [NSString stringWithFormat:@"%d", user.friendsCount];
             self.desc.text = user.desc;
+            NSString *url = [self.user.profileImageUrlHttps stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
+            NSURL *urlImage = [NSURL URLWithString:url];
+            NSURLRequest *urlRequest = [NSURLRequest requestWithURL:urlImage];
+            [self.userImage setImageWithURLRequest:urlRequest placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+                self.userImage.image = image;
+            } failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
+                
+            }];
         }
     }];
     
