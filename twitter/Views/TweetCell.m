@@ -10,16 +10,19 @@
 #import "APIManager.h"
 #import "UIImageView+AFNetworking.h"
 
+
 @implementation TweetCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    UITapGestureRecognizer *profileTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapUserProfile:)];
+    [self.posterImage addGestureRecognizer:profileTapGestureRecognizer];
+    [self.posterImage setUserInteractionEnabled:YES];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
     // Configure the view for the selected state
 }
 
@@ -52,9 +55,7 @@
             NSLog(@"it unretweeted");
         }];
     }
-    
     [self refreshData];
-    
 }
 
 - (IBAction)tapFavorite:(id)sender {
@@ -73,12 +74,10 @@
             NSLog(@"it unfavorited");
         }];
     }
-    
     [self refreshData];
 }
 
 - (void)setTweetCell:(Tweet *)tweet{
-    
     _tweet = tweet;
     //setting all info
     self.createdAt.text = self.tweet.createdAtString;
@@ -96,16 +95,17 @@
     //gets the profile picture of the tweet
     NSString *profileImageURL = [self.tweet.user.profileImageUrlHttps stringByReplacingOccurrencesOfString:@"_normal" withString:@""];
     NSURL *profileImage = [NSURL URLWithString:profileImageURL];
-    
     NSURLRequest *profileImageRequest = [NSURLRequest requestWithURL:profileImage];
     
     [self.posterImage setImageWithURLRequest:profileImageRequest placeholderImage:nil success:^(NSURLRequest * _Nullable request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
-        
         self.posterImage.image = image;
-        
     } failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
         //failure
     }];
+}
+
+- (void)didTapUserProfile:(UITapGestureRecognizer *)sender{
+    [self.delegate tweetCell:self didTap:self.tweet.user];
 }
 
 @end

@@ -22,6 +22,7 @@
 		D181464524AA95F900779208 /* TweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D181464424AA95F900779208 /* TweetCell.m */; };
 		D181464824ABD7D900779208 /* ComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D181464724ABD7D900779208 /* ComposeViewController.m */; };
 		D190902D24AD3845009C9210 /* UserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D190902C24AD3845009C9210 /* UserViewController.m */; };
+		D190903324AE7426009C9210 /* TweetUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D190903224AE7426009C9210 /* TweetUserViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,8 @@
 		D181464724ABD7D900779208 /* ComposeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComposeViewController.m; sourceTree = "<group>"; };
 		D190902B24AD3845009C9210 /* UserViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserViewController.h; sourceTree = "<group>"; };
 		D190902C24AD3845009C9210 /* UserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserViewController.m; sourceTree = "<group>"; };
+		D190903124AE7426009C9210 /* TweetUserViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TweetUserViewController.h; sourceTree = "<group>"; };
+		D190903224AE7426009C9210 /* TweetUserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TweetUserViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +157,8 @@
 				D181464724ABD7D900779208 /* ComposeViewController.m */,
 				D190902B24AD3845009C9210 /* UserViewController.h */,
 				D190902C24AD3845009C9210 /* UserViewController.m */,
+				D190903124AE7426009C9210 /* TweetUserViewController.h */,
+				D190903224AE7426009C9210 /* TweetUserViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -280,6 +285,7 @@
 				D181464524AA95F900779208 /* TweetCell.m in Sources */,
 				6AD278F320BCA6020085BC29 /* BDBOAuth1SessionManager+SFAuthenticationSession.m in Sources */,
 				D181463F24AA7B9100779208 /* User.m in Sources */,
+				D190903324AE7426009C9210 /* TweetUserViewController.m in Sources */,
 				D181464824ABD7D900779208 /* ComposeViewController.m in Sources */,
 				6AD278E820BC4B970085BC29 /* main.m in Sources */,
 				D181464224AA7DF100779208 /* Tweet.m in Sources */,
