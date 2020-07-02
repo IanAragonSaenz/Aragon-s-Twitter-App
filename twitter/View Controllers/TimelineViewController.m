@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "TweetUserViewController.h"
+#import "DetailViewController.h"
 
 @interface TimelineViewController () <TweetCellDelegate, ComposeViewControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -68,6 +69,9 @@
         UINavigationController *navigationController = [segue destinationViewController];
         ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
         composeController.delegate = self;
+    }else if([segue.identifier isEqualToString:@"detailTweet"]){
+        DetailViewController *detailsViewController = [segue destinationViewController];
+        detailsViewController.tweet = sender;
     }
 }
 
@@ -106,5 +110,8 @@
     [self performSegueWithIdentifier:@"userView" sender:user];
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self performSegueWithIdentifier:@"detailTweet" sender:self.tweets[indexPath.row]];
+}
 
 @end
