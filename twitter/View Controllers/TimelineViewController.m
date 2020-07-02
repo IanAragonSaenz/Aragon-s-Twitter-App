@@ -88,7 +88,7 @@
 #pragma mark - Navigation Buttons
 
 - (void)didTweet:(nonnull Tweet *)tweet {
-    [self fetchTweets];
+    [self.tweets insertObject:tweet atIndex:0];
     [self.tableView reloadData];
 }
 
