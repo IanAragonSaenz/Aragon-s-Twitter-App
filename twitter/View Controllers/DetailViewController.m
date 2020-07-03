@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *favoriteCount;
 @property (weak, nonatomic) IBOutlet UIButton *retweetButton;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
+@property (weak, nonatomic) IBOutlet UILabel *replyName;
 
 
 @end
@@ -40,6 +41,7 @@
     self.retweetCount.text = [NSString stringWithFormat:@"%d", self.tweet.retweetCount];
     self.text.text = self.tweet.text;
     self.timeAgo.text = self.tweet.timeAgo;
+    self.replyName.text = [NSString stringWithFormat:@"Replying to %@", self.screenName.text];
     
     //sets the buttons to correct image
     [self refreshData];
@@ -100,6 +102,11 @@
         }];
     }
     [self refreshData];
+}
+
+- (IBAction)sendReply:(id)sender {
+    
+    
 }
 
 /*
